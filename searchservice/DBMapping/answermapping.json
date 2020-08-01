@@ -1,0 +1,26 @@
+{
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "long"
+      },
+      "ownerUserId": {
+        "type": "long",
+        "null_value": -1
+      },
+      "creationDate": {
+        "type": "date",
+        "format": "strict_date_time_no_millis"
+      },
+      "parentId": {
+        "type": "long"
+      },
+      "score": {
+        "type": "long"
+      },
+      "body": {
+        "type": "text"
+      }
+    }
+  }
+}

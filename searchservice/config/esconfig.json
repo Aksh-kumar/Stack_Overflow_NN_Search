@@ -1,0 +1,4 @@
+{
+    "elasticSearchHost": "localhost",
+    "elasticSearchPort": 9200
+}

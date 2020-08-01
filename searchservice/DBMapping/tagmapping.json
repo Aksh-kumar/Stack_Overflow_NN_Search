@@ -1,0 +1,15 @@
+{
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "long"
+      },
+      "questionId": {
+        "type": "long"
+      }
+      "tag": {
+        "type": "text"
+      }
+    }
+  }
+}

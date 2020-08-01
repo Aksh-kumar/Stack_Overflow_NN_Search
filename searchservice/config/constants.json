@@ -1,0 +1,17 @@
+{
+    "questionMapping": "./DBMapping/questionmapping.json",
+    "answerMapping": "./DBMapping/answermapping.json",
+    "tagMapping": "./DBMapping/tagmapping.json",
+    "questionCSV": "./data/Questions.csv",
+    "answerCSV": "./data/Answers.csv",
+    "tagCSV": "./data/Tags.csv",
+    "USEModelPath": "C:/Users/jkuaka3/Documents/ML workbook/Stack_Overflow_NN_Search/SentenceVectorModel/USEModel",
+    "SVModelPath": "C:/Users/jkuaka3/Documents/ML workbook/Stack_Overflow_NN_Search/SentenceVectorModel",
+    "questionIndexName": ["question-index0","question-index1", "question-index2", "question-index3", "question-index4"],
+    "answerIndexName": "answer-index",
+    "tagIndexName": "tag-index",
+    "dateNULLValue": "1820-01-01T00:00:00Z",
+    "ownerIDNULLValue": -1,
+    "chunkSize": 500,
+    "totalQuestionCount": 1264216
+}
