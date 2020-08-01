@@ -2,6 +2,8 @@
 __pycache__/
 
 #data folder
-/searchservice/data/
-
-/sentencevectormodel/USEModel
+!.gitkeep/
+/searchservice/data/*.csv
+!/sentencevectormodel/USEModel/.gitkeep
+/sentencevectormodel/USEModel/*.pb
+/sentencevectormodel/USEModel/**/
