@@ -25,9 +25,24 @@ Response : [[....512 float number represent sentence vector... ]]
 This is main API which gives the actual similar searched sentences with full Information.In this folder we have:<br/>
 config folder : contains 3 json configuration file relative to searchservice folder<br/>
 constant.json:-<br/>
+
 ```json
 {
-  "questionMapping": "path in which question.csv file column map to elastic search DB while creating question-index e.g:- \"./DBMapping/questionmapping.json\""
+  "questionMapping":  "path in which question.csv file column map to elastic search DB while creating question-index e.g:- \" ./DBMapping/questionmapping.json \" ",
+  "answerMapping": "path in which question.csv file column map to elastic search DB while creating answer-index e.g:- \"./DBMapping/answermapping.json\" ",
+  "tagMapping": "path in which question.csv file column map to elastic search DB while creating answer-index e.g:- \"./DBMapping/tagmapping.json\" ",
+  "questionCSV": "path of question.csv file (e.g:-\"./data/Questions.csv\")",
+  "answerCSV": "path of answer.csv file (e.g:-\"./data/Answers.csv\")",
+  "tagCSV": "path of tag.csv file (e.g:-\"./data/Tags.csv\")",
+  "USEModelPath": "Absolutepathwhereyoursentencevectormodelislocated.ItisusedtowhileinsertingquestionsinelasticDBWeneedtofindquestionvectorandthismodelisusedtoproducedsentencevector,   itisdirectlyusedBysentencevectormodeli.eWordEmbeddingobjectasadependencyinjectionwhichallowustoaddmultiplemodelinfuturebydoingcoupleofchangeshereandthere.(e.g: -\"C:/.../Stack_Overflow_NN_Search/SentenceVectorModel/USEModel\")",
+  "SVModelPath": "File path of sentencevector.py file in which WordEmbedding and EmbeddingModel class is located which is used to get sentence vector of question which further inserted into elastic DB.(e.g:-\"C:/.../Stack_Overflow_NN_Search/SentenceVectorModel\")",
+  "questionIndexName": "string or list of string of name of question index since data is large even sharding will  not help so I choose to create multiple indexes for question insertion so that query will take less time. you may choose to put string here which represent only single question index is created.  (e.g:-[\"question-index0\",\"question-index1\", \"question-index2\", \"question-index3\", \"question-index4\"])",
+  "answerIndexName": "string or list of string of names of answer index same as question index (e.g:-\"answer-index\")",
+  "tagIndexName": "string or list of string of names of answer index same as question index (e.g:-\"tag-index\")",
+  "dateNULLValue": "Needed when any date feild is null then this will used as a null values e.g closedDate in question. csv and creationDate in answer.csv is null sometimes (e.g: \"1820-01-01T00:00:00Z\")",
+  "ownerIDNULLValue": "Needed when any ownerId feild is null then this will used as a null values e.g ownerUserId in question.csv also in answer.csv is null sometimes (e.g: -1)",
+  "chunkSize": "Data inserted as a bulk to this is used as a chunk size inserted at a time (e.g: 500)",
+  "totalQuestionCount": "required only when list of string is provided in questionIndexName feild helps to insert data equally in every index uses (this value)/(total number of question index name provided) insertion (e.g:-1264216)"
 }
 ```
 
@@ -48,9 +63,10 @@ textvectorconfig.json:-  <br/>
 Data:- folder contain answer.csv, question.csv and tag.csv file available in <a href='https://www.kaggle.com/stackoverflow/stacksample'>this link</a>
 
 DBMapping:- contain 3 json file which is used while creating index in elastic DB<br/>
+
 <li>answermapping.json:- used while creating indexes for answer.csv</li>
 <li>questionmapping.json:- used while creating indexes for question.csv</li>
-<li>tagmapping.json:- used while creating indexes for tag.csv</li>
+<li>tagmapping.json:- used while creating indexes for tag.csv</li><br/>
 
 modules:- contain python helper file which is used by flask main.py
 
