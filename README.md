@@ -1,77 +1,80 @@
 # Stack_Overflow_NN_Search
-The problem based on sementic search similarity as discussed by Applied AI public live session
-<a href='https://www.youtube.com/watch?v=FpMmpKIvsnQ&ab_channel=AppliedAICourse'> link</a>
-In which we have given a question asked by user and we have to capture k similar question to it.
-Applied AI public live session explain this in very detailed way, I strongly recommend to please go through the series of this video in order to understand whole flow. Now coming back to point How we wil do that. This code is devided into 3 parts.
+Sementic search problem search similar asked question.
+
+The problem based on sementic search similarity as discussed by Applied AI public live session <a href='https://www.youtube.com/watch?v=FpMmpKIvsnQ&ab_channel=AppliedAICourse'> here is the link </a> In which we have given a question asked by user and we have to capture k similar question to it. Applied AI public live session explain this in very detailed way, I strongly recommend to please go through the series of this video in order to understand whole flow. Now coming back to point How we wil do that. This code is devided into 3 parts.
+
 <li> Elastic search DB</li>
 <li> sentence vector Model</li>
 <li> search Service</li>
-<br/><h3>1.Elastic search DB</h3>
-This is simple Elastic search Instance running on the same machine or different machine.
-<br/><h3>2.sentence vector Model: </h3>
-This Module Contain flask Based API to get Sentence vector of given sentence by using Universal Sentence Encoder(USE) model. It' s a good practice to download the model locally and put it into /sentencevectormodel/USEModel folder so that
-It need not download every time from server.If It will not find the model It will Go and Fetch the model from server path
-given inside sentencevectormodel.py in USE_URL. Here I used USE model but if you want you can choose any sentence to vector model based on your preference, you need to change a code little bit. As the flask app started It loads the model
-and keep it into local variable, later If some request will come with the list of sentence that need to encoded it use this model to generate vector of each sentence and sent it to user.
 
+<h3> 1.Elastic search DB</h3>
+This is simple Elastic search Instance running on the same machine or different machine.
+
+<h3> 2.sentence vector Model: </h3>
+
+This Module Contain flask Based API to get Sentence vector of given sentence by using Universal Sentence Encoder(USE) model. It' s a good practice to download the model locally and put it into /sentencevectormodel/USEModel folder so that It need not download every time from server.If It will not find the model It will Go and Fetch the model from server path given inside sentencevectormodel.py in USE_URL. Here I used USE model but if you want you can choose any sentence to vector model based on your preference, you need to change a code little bit. As the flask app started It loads the model and keep it into local variable, later If some request will come with the list of sentence that need to encoded it use this model to generate vector of each sentence and sent it to user. Publiccly expose API
+
+```
 URI- 127.0.0.1:5000/use/getsentencevector
 Type:- POST
 BODY: { "sentences": ["sentence that need to Encode"]} // for more sentence just add sentence to list
 Response : [[....512 float number represent sentence vector... ]]
-</br><h3>3.search Service: </h3>
-<pre>
-This is main API which gives the actual similar searched sentences with full Information.In this folder we have:
+```
 
-config folder : contains 3 json configuration file relative to searchservice folder
-constant.json:-
-    "questionMapping": path in which question.csv file column map to elastic search DB while creating question-index
-        e.g:- "./DBMapping/questionmapping.json"
-    "answerMapping": path in which question.csv file column map to elastic search DB while creating answer-index
-        e.g:- "./DBMapping/answermapping.json"
-    "tagMapping": path in which question.csv file column map to elastic search DB while creating answer-index
-        e.g:- "./DBMapping/tagmapping.json"
-    "questionCSV": path of question.csv file (e.g:-"./data/Questions.csv")  
-    "answerCSV": path of answer.csv file (e.g:-"./data/Answers.csv")
-    "tagCSV": path of tag.csv file (e.g:-"./data/Tags.csv")
-    "USEModelPath": Absolute path where your sentence vector model is located.It is used to while inserting questions in 
-        elastic DB We need to find question vector and this model is used to produced sentence vector, it is directly used By sentence vector model i.e WordEmbedding object as a dependency injection which allow us to add multiple model in future by doing couple of changes here and there. (e.g:-"C:/.../Stack_Overflow_NN_Search/SentenceVectorModel/USEModel")
-    "SVModelPath": File path of sentencevector.py file in which WordEmbedding and EmbeddingModel class is located which is
-        used to get sentence vector of question which further inserted into elastic DB.(e.g:-"C:/.../Stack_Overflow_NN_Search/SentenceVectorModel")
-    "questionIndexName":  string or list of string of name of question index since data is large even sharding will  not
-        help so I choose to create multiple indexes for question insertion so that query will take less time. you may choose to put string here which represent only single question index is created.  (e.g:-["question-index0","question-index1", "question-index2", "question-index3", "question-index4"])
-    "answerIndexName": string or list of string of names of answer index same as question index (e.g:-"answer-index")
-    "tagIndexName": string or list of string of names of answer index same as question index (e.g:-"tag-index")
-    "dateNULLValue": Needed when any date feild is null then this will used as a null values e.g closedDate in question.
-        csv and creationDate in answer.csv is null sometimes (e.g: "1820-01-01T00:00:00Z")
-    "ownerIDNULLValue": Needed when any ownerId feild is null then this will used as a null values e.g ownerUserId in
-        question.csv also in answer.csv is null sometimes (e.g: -1)
-    "chunkSize": Data inserted as a bulk to this is used as a chunk size inserted at a time (e.g: 500),
-    "totalQuestionCount": required only when list of string is provided in questionIndexName feild helps to insert data
-        equally in every index uses (this value)/(total number of question index name provided) insertion (e.g:-1264216)
-esconfig.json:-
-    "elasticSearchHost":  server IP where elastic search DB is located (download from https://www.elastic.co/ put it in
-        server and start it) (e.g:-"localhost")
-    "elasticSearchPort": port in which elastic search is running (e.g:-9200)
-textvectorconfig.json:-
-    "textVectorPOSTAPI": API in which getsentencevector flask API is running
-Data:- folder contain answer.csv, question.csv and tag.csv file available in 
-        <a href='https://www.kaggle.com/stackoverflow/stacksample'>this link</a>
-DBMapping:- contain 3 json file which is used while creating index in elastic DB
-    answermapping.json:- used while creating indexes for answer.csv
-    questionmapping.json:- used while creating indexes for question.csv
-    tagmapping.json:- used while creating indexes for tag.csv
+<h3> 3.search Service:</h3><br/>
+This is main API which gives the actual similar searched sentences with full Information.In this folder we have:<br/>
+config folder : contains 3 json configuration file relative to searchservice folder<br/>
+constant.json:-<br/>
+```json
+{
+  "questionMapping": "path in which question.csv file column map to elastic search DB while creating question-index e.g:- \"./DBMapping/questionmapping.json\""
+}
+```
+
+esconfig.json:-<br/>
+```json
+{
+  "elasticSearchHost":  "server IP where elastic search DB is located (download from https://www.elastic.co/ put it in server and start it) (e.g:-\"localhost\")",
+  "elasticSearchPort": "port in which elastic search is running (e.g:-9200)"
+}
+```
+  
+textvectorconfig.json:-  <br/>
+```json
+{
+  "textVectorPOSTAPI": "API in which getsentencevector flask API is running"
+}
+```
+Data:- folder contain answer.csv, question.csv and tag.csv file available in <a href='https://www.kaggle.com/stackoverflow/stacksample'>this link</a>
+
+DBMapping:- contain 3 json file which is used while creating index in elastic DB<br/>
+<li>answermapping.json:- used while creating indexes for answer.csv</li>
+<li>questionmapping.json:- used while creating indexes for question.csv</li>
+<li>tagmapping.json:- used while creating indexes for tag.csv</li>
+
 modules:- contain python helper file which is used by flask main.py
+
 APIrequest.py:- Used to make Http calls related class which helps us to make call for getting sentence vector
+
 elasticsearchconnection.py:- used to get elastic search connection object
+
 essearch.py:- used to get search result from query question
+
 indexcreation.py:- used to create index for question, answer and tag and insert into elastic DB
+
 test.py:- simple testing any method or debugg file.
+
 main.py:- flask main entry point
-    APIs
-    URI- 127.0.0.1/5001/es-search/get-answer
-    Type:- GET
-    ARGS: ?questionId=question Id 
-    Response :  // for  http://127.0.0.1:5001/es-search/get-answer/?questionId=580
+
+``` 
+APIs
+URI- 127.0.0.1/5001/es-search/get-answer
+Type:- GET
+ARGS: ?questionId=question Id 
+Response :  // for  http://127.0.0.1:5001/es-search/get-answer/?questionId=580
+```
+
+```json
     {
   "_shards": {
     "failed": 0,
@@ -287,11 +290,16 @@ main.py:- flask main entry point
     "timed_out": false,
     "took": 2266
     }
+```
 
-    URI- 127.0.0.1:5001/es-search/get-tag
-    Type:- GET
-    ARGS: ?questionId=question Id 
-    Response :  // for  http://127.0.0.1:5001/es-search/get-tag/?questionId=580
+```
+URI- 127.0.0.1:5001/es-search/get-tag
+Type:- GET
+ARGS: ?questionId=question Id 
+Response :  // for  http://127.0.0.1:5001/es-search/get-tag/?questionId=580
+``` 
+
+```json
     {
     "_shards": {
         "failed": 0,
@@ -355,16 +363,21 @@ main.py:- flask main entry point
     "timed_out": false,
     "took": 69
     }
+```
+    
+```    
+URI- 127.0.0.1:5001/es-search/search-sentence
+Type:- POST
+BODY: raw JSON  {
+    "sentence": "classification from api", // match pattern sentence
+    "size": 5, // Number of matched queries // limited to 10
+    "withAnswer": false, // If each query result contain with answer
+    "withTag": false // If each query result contain tags
+}
+Response :  // for   http://127.0.0.1:5001/es-search/search-sentence
+```
 
-    URI- 127.0.0.1:5001/es-search/search-sentence
-    Type:- POST
-    BODY: raw JSON  {
-        "sentence": "classification from api", // match pattern sentence
-        "size": 5, // Number of matched queries // limited to 10
-        "withAnswer": false, // If each query result contain with answer
-        "withTag": false // If each query result contain tags
-    }
-    Response :  // for   http://127.0.0.1:5001/es-search/search-sentence
+```json
     [
     {
         "body": "<p>In <code>weka.classifier.Evaluation</code> there is the <code>toMatrixString()</code> method, which outputs the confusion matrix like below.</p>\n\n<pre><code>  a  b  c   &lt;-- classified as\n 50  0  0 |  a = Iris-setosa\n  0 45  5 |  b = Iris-versicolor\n  0  3 47 |  c = Iris-virginica\n</code></pre>\n\n<p>I noticed classes in this output are taken from the dataset given as  parameter of <code>Evaluation</code> constructor. </p>\n\n<p>Is there a way to obtain a list of possible outputs from the <code>Classifier</code> object?</p>\n",
@@ -422,8 +435,8 @@ main.py:- flask main entry point
         "title": "Semantic/Contextual Categorization API"
     }
     ]
-</pre>
-<br>
+```
+
 So that is the sample project I created within less then a week.It still need some Improvement like making wach 3 module
 completely decouple, it still contain some tight coupling in indexcreation.py and sentencevectormodel.py since it uses this modult to get sentence vector. I choose to do it because If I did this through API it will take more time to insert in elastic search DB, But If you need complete decouple model of all three so that they can be containerize and deployed in different system. you are free to do modification by your own the line number 374 where I am fetching sentence vector replace it with API call to get it as I did in _get_sentence_vector method in essearch.py you can replace it with this.
 And remove all the direct import from any class used from sentencevectormodel.py as in test.py  then you are good to go.
