@@ -1,6 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-
+**/venv/*
 #data folder
 !.gitkeep/
 /searchservice/data/*.csv
