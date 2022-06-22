@@ -43,7 +43,7 @@ mkdocs-material==4.6.3
 mkdocs-minify-plugin==0.2.3
 mysql-connector-python==8.0.17
 numba==0.46.0
-numpy==1.17.1
+numpy==1.22.0
 oauthlib==3.1.0
 opencv-python==4.1.2.30
 opt-einsum==3.2.1
