@@ -77,5 +77,5 @@ termcolor==1.1.0
 tornado==6.0.4
 typed-ast==1.4.0
 urllib3==1.25.9
-Werkzeug==0.15.6
+Werkzeug==2.2.3
 wrapt==1.11.2
